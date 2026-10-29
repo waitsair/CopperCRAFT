@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CopperCRAFT — SMP-сервер Minecraft 1.21.11</title>
+<meta name="description" content="CopperCRAFT — SMP-сервер Minecraft 1.21.11. IP: thecoppercraft.play.ski">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#15100c; --card:#1e1712; --line:#33271e;
+  --orange:#ff7a1a; --orange2:#ff9d4d;
+  --text:#f5ece3; --muted:#b4a392;
+  --font:"Manrope","Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{background:var(--bg);color:var(--text);font:400 1.02rem/1.65 var(--font);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--orange2);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+
+/* Меню */
+.nav{position:sticky;top:0;z-index:10;background:rgba(21,16,12,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem}
+.logo img{width:32px;height:32px;border-radius:8px}
+.logo span{color:var(--orange)}
+.links{display:flex;align-items:center;gap:6px}
+.links a{padding:8px 14px;border-radius:8px;color:var(--muted);font-weight:600;transition:color .15s,background .15s}
+.links a:hover{color:var(--text);background:var(--card)}
+.links a.cta{background:var(--orange);color:#1a0e05;font-weight:800;margin-left:6px}
+.links a.cta:hover{background:var(--orange2)}
+
+/* Кнопки */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--text);
+  padding:13px 22px;border-radius:12px;font:700 1rem var(--font);transition:border-color .15s,background .15s,transform .1s}
+.btn:hover{border-color:var(--orange);background:#271c14}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--orange);border-color:var(--orange);color:#1a0e05;font-weight:800}
+.btn.primary:hover{background:var(--orange2);border-color:var(--orange2)}
+
+/* Главная */
+.hero{position:relative;text-align:center;padding:96px 0 84px;overflow:hidden}
+.hero::before{content:"";position:absolute;left:50%;top:-120px;width:760px;height:520px;transform:translateX(-50%);
+  background:radial-gradient(closest-side,rgba(255,122,26,.32),rgba(255,122,26,0));pointer-events:none}
+.hero>*{position:relative}
+.badge{display:inline-block;padding:6px 14px;border:1px solid var(--line);border-radius:99px;color:var(--muted);font-weight:600;font-size:.92rem;background:var(--card)}
+.hero h1{margin:22px 0 14px;font-weight:800;font-size:clamp(2.8rem,10vw,5.4rem);line-height:1.02;letter-spacing:-.03em;
+  background:linear-gradient(180deg,#fff3e6 10%,var(--orange2) 55%,var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:34ch;margin:0 auto;color:var(--muted);font-size:1.2rem}
+.ip{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;margin:38px auto 0;padding:10px;width:fit-content;max-width:100%;
+  border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.ip strong{padding:0 12px;font-weight:800;font-size:clamp(1.1rem,4.4vw,1.6rem);color:var(--orange2);overflow-wrap:anywhere}
+.socials{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:22px}
+
+/* Секции */
+section{padding:72px 0 0}
+h2{font-weight:800;font-size:clamp(1.7rem,5vw,2.3rem);letter-spacing:-.02em;margin-bottom:8px}
+.sub{color:var(--muted);margin-bottom:28px}
+.grid{display:grid;gap:16px}
+.grid.three{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{padding:24px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.card h3{font-weight:800;font-size:1.15rem;margin-bottom:6px}
+.card p{color:var(--muted)}
+.num{display:grid;place-items:center;width:36px;height:36px;margin-bottom:16px;border-radius:10px;background:rgba(255,122,26,.15);color:var(--orange2);font-weight:800}
+code{background:#120c08;padding:2px 8px;border-radius:6px;color:var(--orange2);font-size:.92em}
+.rules{display:grid;gap:14px}
+.rule{display:flex;gap:16px;padding:22px 24px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.rule.main{border-color:rgba(255,122,26,.55);background:linear-gradient(100deg,rgba(255,122,26,.13),var(--card) 60%)}
+.rule .ico{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:800;background:rgba(255,122,26,.15);color:var(--orange2)}
+.rule h3{font-weight:800;font-size:1.1rem;margin-bottom:2px}
+.rule p{color:var(--muted)}
+.rule.fun{border-style:dashed}
+
+footer{margin-top:88px;border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:.95rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer a:hover{color:var(--orange2)}
+footer .f{display:flex;gap:18px}
+
+@media (max-width:640px){
+  .links a:not(.cta){display:none}
+  .hero{padding:64px 0 56px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <img src="favicon.png" alt="" onerror="this.style.display='none'">
+      <div>Copper<span>CRAFT</span></div>
+    </a>
+    <nav class="links">
+      <a href="#top">Главная</a>
+      <a href="#start">Как начать</a>
+      <a href="#rules">Правила</a>
+      <a class="cta" href="https://discord.gg/NgmCY6hzj" target="_blank" rel="noopener">Discord</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <div class="hero">
+      <span class="badge">SMP · Minecraft 1.21.11</span>
+      <h1>CopperCRAFT</h1>
+      <p>Уютный SMP-сервер, где всё начинается с медной кирки.</p>
+
+      <div class="ip">
+        <strong id="ip">thecoppercraft.play.ski</strong>
+        <button class="btn primary" id="copy" type="button">Скопировать IP</button>
+      </div>
+
+      <div class="socials">
+        <a class="btn" href="https://discord.gg/NgmCY6hzj" target="_blank" rel="noopener">Discord</a>
+        <a class="btn" href="https://t.me/coppercrafttt" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+
+    <section id="start">
+      <h2>Как начать играть</h2>
+      <p class="sub">Три шага, и ты на сервере.</p>
+      <div class="grid three">
+        <div class="card">
+          <div class="num">1</div>
+          <h3>Запусти игру</h3>
+          <p>Открой Minecraft Java Edition и выбери версию 1.21.11.</p>
+        </div>
+        <div class="card">
+          <div class="num">2</div>
+          <h3>Добавь сервер</h3>
+          <p>Зайди в «Сетевая игра», нажми «Добавить сервер» и вставь <code>thecoppercraft.play.ski</code></p>
+        </div>
+        <div class="card">
+          <div class="num">3</div>
+          <h3>Заходи и играй</h3>
+          <p>Подключайся и загляни в наш Discord: там новости и друзья.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="rules">
+      <h2>Правила сервера</h2>
+      <p class="sub">Их всего два, и их легко соблюдать.</p>
+      <div class="rules">
+        <div class="rule main">
+          <div class="ico">1</div>
+          <div>
+            <h3>Не читерить</h3>
+            <p>Это главное правило. Читы приводят к бану. Автототем читом не считается.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="ico">2</div>
+          <div>
+            <h3>Не грубить администрации</h3>
+            <p>Уважай админов сервера. Спорные вопросы решай спокойно.</p>
+          </div>
+        </div>
+        <div class="rule fun">
+          <div class="ico">+</div>
+          <div>
+            <h3>Купите владельцу чокопай</h3>
+            <p>Это не обязательно, но владелец будет рад.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© CopperCRAFT — SMP-сервер Minecraft 1.21.11</div>
+    <div class="f">
+      <a href="https://discord.gg/NgmCY6hzj" target="_blank" rel="noopener">Discord</a>
+      <a href="https://t.me/coppercrafttt" target="_blank" rel="noopener">Telegram</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn = document.getElementById('copy');
+  var ip = document.getElementById('ip').textContent.trim();
+  var timer;
+  function done(ok){
+    btn.textContent = ok ? 'Скопировано' : 'Выдели IP вручную';
+    clearTimeout(timer);
+    timer = setTimeout(function(){ btn.textContent = 'Скопировать IP'; }, 2000);
+  }
+  function fallback(){
+    var t = document.createElement('textarea');
+    t.value = ip; t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t); t.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(t);
+    done(ok);
+  }
+  btn.addEventListener('click', function(){
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(ip).then(function(){ done(true); }, fallback);
+    } else { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
