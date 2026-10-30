@@ -76,6 +76,22 @@ code{background:#120c08;padding:2px 8px;border-radius:6px;color:var(--orange2);f
 .rule p{color:var(--muted)}
 .rule.fun{border-style:dashed}
 
+
+/* Донат */
+.kit{--c:#ff7a1a;cursor:pointer;text-align:left;color:var(--text);font:inherit;display:block;width:100%;transition:border-color .15s,transform .15s}
+.kit:hover{border-color:var(--c);transform:translateY(-3px)}
+.kit .tag{display:inline-block;margin-bottom:14px;padding:4px 12px;border-radius:99px;font-weight:800;font-size:.9rem;color:#14100c;background:var(--c)}
+.kit .more{display:block;margin-top:14px;color:var(--c);font-weight:700}
+dialog{margin:auto;width:min(440px,calc(100% - 32px));padding:28px;border:1px solid var(--line);border-radius:20px;background:var(--card);color:var(--text);font:inherit}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+dialog h3{font-weight:800;font-size:1.5rem;margin-bottom:4px}
+dialog .tag{display:inline-block;margin-bottom:14px;padding:4px 12px;border-radius:99px;font-weight:800;font-size:.9rem;color:#14100c;background:var(--c,#ff7a1a)}
+dialog ul{margin:16px 0 20px;padding-left:20px;color:var(--text)}
+dialog li{margin:4px 0}
+dialog .note{color:var(--muted);font-size:.95rem;margin-bottom:20px}
+dialog .row{display:flex;gap:10px;flex-wrap:wrap}
+dialog .row .btn{flex:1 1 140px}
+
 footer{margin-top:88px;border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:.95rem}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 footer a:hover{color:var(--orange2)}
@@ -99,6 +115,7 @@ footer .f{display:flex;gap:18px}
     <nav class="links">
       <a href="#top">Главная</a>
       <a href="#start">Как начать</a>
+      <a href="#donate">Донат</a>
       <a href="#rules">Правила</a>
       <a class="cta" href="https://discord.gg/NgmCY6hzj" target="_blank" rel="noopener">Discord</a>
     </nav>
@@ -145,6 +162,17 @@ footer .f{display:flex;gap:18px}
       </div>
     </section>
 
+    <section id="donate">
+      <h2>Донат</h2>
+      <p class="sub">Донат даёт только киты, никаких преимуществ в игре. Нажми на кит, чтобы посмотреть, что внутри.</p>
+      <div class="grid three">
+        <button class="card kit" type="button" data-kit="cobra" style="--c:#c3cad1"><span class="tag">cobra</span><h3>Кит Cobra</h3><p>Железная броня.</p><span class="more">Подробнее →</span></button>
+        <button class="card kit" type="button" data-kit="big" style="--c:#ff7a1a"><span class="tag">big</span><h3>Кит Big</h3><p>Медная броня и медное копьё.</p><span class="more">Подробнее →</span></button>
+        <button class="card kit" type="button" data-kit="fat" style="--c:#f6c445"><span class="tag">fat</span><h3>Кит Fat</h3><p>Золотая броня и золотая мотыга.</p><span class="more">Подробнее →</span></button>
+        <button class="card kit" type="button" data-kit="chill" style="--c:#4fd8e6"><span class="tag">chill</span><h3>Кит Chill</h3><p>Алмазная броня и алмазный меч.</p><span class="more">Подробнее →</span></button>
+      </div>
+    </section>
+
     <section id="rules">
       <h2>Правила сервера</h2>
       <p class="sub">Их всего два, и их легко соблюдать.</p>
@@ -185,6 +213,17 @@ footer .f{display:flex;gap:18px}
   </div>
 </footer>
 
+<dialog id="kitDialog">
+  <span class="tag" id="kTag"></span>
+  <h3 id="kTitle"></h3>
+  <ul id="kList"></ul>
+  <p class="note">Цена обсуждается в Telegram. Нажми «Купить», и тебя перекинет на владельца.</p>
+  <div class="row">
+    <a class="btn primary" href="https://t.me/Am1bee" target="_blank" rel="noopener">Купить</a>
+    <button class="btn" id="kClose" type="button">Закрыть</button>
+  </div>
+</dialog>
+
 <script>
 (function(){
   var btn = document.getElementById('copy');
@@ -209,6 +248,29 @@ footer .f{display:flex;gap:18px}
       navigator.clipboard.writeText(ip).then(function(){ done(true); }, fallback);
     } else { fallback(); }
   });
+})();
+
+(function(){
+  var kits = {
+    cobra: {title:'Кит Cobra', color:'#c3cad1', items:['Железная броня']},
+    big:   {title:'Кит Big',   color:'#ff7a1a', items:['Медная броня','Медное копьё']},
+    fat:   {title:'Кит Fat',   color:'#f6c445', items:['Золотая броня','Золотая мотыга']},
+    chill: {title:'Кит Chill', color:'#4fd8e6', items:['Алмазная броня','Алмазный меч']}
+  };
+  var d = document.getElementById('kitDialog');
+  document.querySelectorAll('.kit').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = b.getAttribute('data-kit'), k = kits[id];
+      d.style.setProperty('--c', k.color);
+      document.getElementById('kTag').textContent = id;
+      document.getElementById('kTitle').textContent = k.title;
+      var ul = document.getElementById('kList'); ul.innerHTML = '';
+      k.items.forEach(function(t){ var li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+      d.showModal();
+    });
+  });
+  document.getElementById('kClose').addEventListener('click', function(){ d.close(); });
+  d.addEventListener('click', function(e){ if (e.target === d) d.close(); });
 })();
 </script>
 </body>
